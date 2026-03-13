@@ -1,0 +1,21 @@
+_format_version: "3.0"
+
+services:
+  - name: sakura-ai-chat-service
+    url: http://localhost
+    routes:
+      - name: sakura-ai-chat-route
+        paths:
+          - /sakura-ai/chat
+        strip_path: false
+    plugins:
+      - name: ai-proxy
+        config:
+          route_type: llm/v1/chat
+          auth:
+            header_name: Authorization
+            header_value: "{vault://env/sakura-ai-auth-header}"
+          model:
+            provider: openai
+            options:
+              upstream_url: https://api.ai.sakura.ad.jp/v1/chat/completions
